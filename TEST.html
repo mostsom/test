@@ -53,6 +53,7 @@
                 <span id="p4" style="display: none;"></span>
                 <span id="p5" style="display: none;"></span>
                 <script>
+                    var ansvercheat = '44224233442132344133142122334431231431231441223211213133114132132213424114214123313311423114321234432414312331331332422112112413311111111111111111141311114111112141245111411111111313134141311111114114112341111112111214421311111111412121412111411121231414312321412134214211142314111442233312111431413224321241244412'
                     var gQID = 0;
                     class easyQ{
                         constructor(quation,correctansIndex,ansvers){
@@ -282,7 +283,7 @@
 </script>
 <script>
     for (let index = 0; index < 316; index++) {
-        test.push(new easyQ(quations[index],1,aa[index]));
+        test.push(new easyQ(quations[index],parseInt(ansvercheat[i]),aa[index]));
     }
     test[0].show();
     function lt() {
