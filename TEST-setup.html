@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST2-SETUP</title>
+    <style>
+        body{
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="testT" cols="30" rows="10" placeholder="test ex: quation A) asd B) asdd C) asds D) ads"></textarea>
+    <textarea id="ansT" cols="30" rows="10" placeholder="ansver ex: 1234"></textarea>
+    <button onclick="save()">SAVE</button>
+    <script>
+        function save() {
+            console.log(testT.value);
+            console.log(ansT.value);
+            if(testT.value.length > 2 && ansT.value.length > 0){
+                test = testT.value.split('')
+                var tempT = "";
+                for (var i = 0; i < test.length; i++) {
+                    if(test[i] != "\n"){
+                        tempT += test[i];
+                    }else{
+                        tempT += " ";
+                    }
+                }
+                console.log(tempT);
+                localStorage.setItem("easyQ", tempT);
+                localStorage.setItem("easyQAns", ansT.value);
+            }else{
+                alert("Error: test don't response please fill the boxs")
+            }
+            // localStorage.setItem("easyQ", testT.);
+        }
+    </script>
+</body>
+</html>

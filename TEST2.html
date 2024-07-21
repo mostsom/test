@@ -1,0 +1,317 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head>     
+        <meta charset="UTF-8">    
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">     
+         <title>TEST2</title>
+         <style>
+            body{
+                display: flex;
+                align-items: center;
+                flex-direction: column
+            }
+            #test_cont{
+                width: 85%;
+                text-align: center;
+            }
+            #p0, #p1, #p2, #p3, #p4, #p5{
+                border: 1px solid grey;
+                border-radius: 20px;
+                max-height: 400px;
+                font-size: 20px;
+                cursor: pointer;
+            }
+            #quationP{
+                font-size: 25px;
+            }
+            button{
+                width: 50px;
+                height: 50px;
+                font-weight: 300;
+                font-size: 40px;
+            }
+            span{
+                padding: 20px;
+                width: 50px;
+                font-size: 40px;
+            }
+            #lol{
+                position: relative;
+                text-align: center;
+            }
+            .stopbtn{
+                position: relative;
+                margin-top: 40px;
+                width: auto;
+            }
+         </style>
+         </head>
+         
+        <body> 
+                <div id="test_cont"></div>
+                <div id="lol"><button onclick="lt()">&lt</button><span id="currentQ">1</span><button onclick="gt()">&gt</button></div><button class="stopbtn" onclick="stop()">Tugatish</button>
+                <span id="p4" style="display: none;"></span>
+                <span id="p5" style="display: none;"></span>
+                <script>                    
+                    var gQID = 0;
+                    class easyQ{
+                        constructor(quation,cAI,ansvers){
+                            this.quation = quation;
+                            this.cAI = cAI;
+                            this.ansvers = ansvers;
+                            this.select = null;
+                            this.qas = [];
+                            this.qp = document.createElement('p');
+                            this.qp.id = 'quationP';
+                            for (let i = 0; i < this.ansvers.length; i++) {
+                                var qa = document.createElement('p');
+                                qa.id = "p"+i;
+                                qa.onclick = (e) =>{
+                                    console.log(e.target.id[1])
+                                    test[gQID].select = e.target.id[1];
+                                    if(p0){p0.style.background = 'white';}
+                                    if(p1){p1.style.background = 'white';}
+                                    if(p2){p2.style.background = 'white';}
+                                    if(p3){p3.style.background = 'white';}
+                                    if(p4){p4.style.background = 'white';}
+                                    if(p5){p5.style.background = 'white';}
+                                    if(p0){p0.style.color = 'black';}
+                                    if(p1){p1.style.color = 'black';}
+                                    if(p2){p2.style.color = 'black';}
+                                    if(p3){p3.style.color = 'black';}
+                                    if(p4){p4.style.color = 'black';}
+                                    if(p5){p5.style.color = 'black';}
+                                    e.target.style.background = 'green';
+                                    e.target.style.color = 'white';
+                                }
+                                qa.innerText = this.ansvers[i];
+                                this.qas.push(qa)
+                            }
+                        }
+                        log(){
+                            console.log("|QUATION|");
+                            console.log(this.quation);
+                            console.log("|ANSVERS|");
+                            console.log(this.ansvers);
+                            console.log("|CORRECT ANSVER|");
+                            console.log(this.ansvers[this.cAI]);
+                        }
+                        show(){
+                            this.qp.innerHTML = this.quation;
+                            test_cont.appendChild(this.qp);
+                            this.qas.forEach(q => {
+                                test_cont.appendChild(q);
+                            });
+                            
+                        }
+                        hide(){
+                            this.qas.forEach(q => {
+                                test_cont.removeChild(q);
+                            });
+                            test_cont.removeChild(this.qp);
+                        }
+                    }
+                </script>
+                <script>
+                var base = localStorage.getItem("easyQ");
+                base = base.split(' ');
+                var index = 1;
+                var indexFind = false;
+                var DFind = false;
+                var quation = "";
+                var baseS = [];
+                var quations = [];
+                var ansvers = [];
+                var aa = [];
+                var i = 0;
+                var test = [];
+                    for (; index <= 30; i++) {
+                    if(indexFind == false){
+                        if(base[i] == index+'.'){
+                            indexFind = true;
+                        }
+                    }else{
+                        if(DFind == false){
+                            quation += base[i] + " ";
+                            if(base[i+1] == 'D.' || base[i+1] == 'D)'){
+                                DFind = true;                                
+                            }
+                        }else{
+                            if(base[i+1] == (index+1)+'.'){
+                                quation += base[i] + " ";
+                                baseS.push(quation);
+                                quation = "";
+                                indexFind = false;
+                                DFind = false;
+                                index++;
+                            }else{
+                                if(base[i] != "*"){
+                                    quation += base[i] + " ";
+                                }
+                            }
+                        }
+                    }
+                }
+                    for (let j = i; j < base.length; j++) {
+                        if(index+"." == base[j] || index+")" == base[j]){
+                            baseS.push(quation);
+                            quation = "";
+                            index++;
+                        }else{
+                            quation += base[j] + " ";
+                        }
+                    }
+                baseS = [].concat(baseS.slice(0,30),baseS.slice(31));
+                baseS.push(quation);
+                for (let index = 0; index < baseS.length; index++) {
+                    baseS[index] = dellChar(baseS[index],'*')
+                    
+                }
+                for (let i = 0; i < baseS.length; i++) {
+                    var tempB = baseS[i].split(' ');
+                    var tempQText = "";
+                    var finda = false;
+                    for (let j = 0; j < tempB.length; j++) {
+                        if(finda == false){
+                            if(tempB[j] == 'A.' || tempB[j] == 'A)'){
+                                quations.push(tempQText)
+                                tempQText = "";
+                                finda = true;
+                            }else{
+                                tempQText += tempB[j] + " "
+                            }
+                        }else{
+                            tempQText += tempB[j] + " ";
+                        }
+                    }
+                    ansvers.push("A) "+tempQText);
+                }
+                for (let i = 0; i < ansvers.length; i++) {
+                    aa.push(splitans(ansvers[i]));                    
+                }
+                function splitans(text){
+                    var findB = false;
+                    var findC = false;
+                    var findD = false;
+                    var findE = false;
+                    var findF = false;
+                    var textt = "";
+                    var arr = [];
+                    for (let i = 0; i < text.length; i++) {
+                        if(findB == false){
+                            if(text[i+1] == 'B' && text[i+2] == '.' || text[i+1] == 'B' && text[i+2] == ')'){
+                                findB = true;
+                                arr.push(textt);
+                                textt = "";
+                            }else{
+                                textt += text[i] + ""
+                            }
+                        }else{
+                            if(findC == false){
+                                if(text[i+1] == 'C' && text[i+2] == '.' || text[i+1] == 'C' && text[i+2] == ')'){
+                                    findC = true;
+                                    arr.push(textt);
+                                    textt = "";
+                                }else{
+                                    textt += text[i] + ""
+                                }
+                            }else{
+                                if(findD == false){
+                                    if(text[i+1] == 'D' && text[i+2] == '.' || text[i+1] == 'D' && text[i+2] == ')'){
+                                        findD = true;
+                                        arr.push(textt);
+                                        textt = "";
+                                    }else{
+                                        textt += text[i] + ""
+                                    }
+                                }else{
+                                    if(findE == false){
+                                        if(text[i+1] == 'E' && text[i+2] == '.' || text[i+1] == 'E' && text[i+2] == ')'){
+                                            findE = true;
+                                            arr.push(textt);
+                                            textt = "";
+                                        }else{
+                                            textt += text[i] + ""
+                                        }
+                                    }else{
+                                        if(findF == false){
+                                            if(text[i+1] == 'F' && text[i+2] == '.' || text[i+1] == 'F' && text[i+2] == ')'){
+                                                findE = true;
+                                                arr.push(textt);
+                                                textt = "";
+                                            }else{
+                                                textt += text[i] + ""
+                                            }
+                                        }
+                                        else{
+                                            textt += text[i] + ""
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    arr.push(textt);
+                    return arr;
+                }
+
+                function searchChar(text,char) {
+                    var arr = text.split('')
+                    for (let i = 0; i < arr.length; i++) {
+                        if(arr[i] == char){
+                            return i;
+                        }                        
+                    }
+                }
+                function dellChar(text,char,by='char') {
+                    var arr = text.split('');
+                    var Ttext = "";
+                    if(by == 'char'){
+                        for (let i = 0; i < text.length; i++) {
+                            if(arr[i] == char){
+                            }else{
+                                Ttext+=arr[i];
+                            }   
+                        }
+                    }else if(by == 'index'){
+                        Ttext = [].concat(arr.slice(0,char),arr.slice(char+1))
+                        Ttext = Ttext.join('');
+                    }
+                    return Ttext;
+                }
+</script>
+<script>
+    var ansvercheat = localStorage.getItem("easyQAns");
+    ansvercheat = ansvercheat.split('');
+    for (let index = 0; index < 316; index++) {
+        test.push(new easyQ(quations[index],(parseInt(ansvercheat[index])-1),aa[index]));
+    }
+    test[0].show();
+    function lt() {
+        if(gQID > 0){
+            test[gQID].hide();
+            gQID-=1;
+            test[gQID].show();
+            currentQ.innerHTML = gQID+1;
+        }
+    }
+    function gt() {
+        if(gQID < 315){
+            test[gQID].hide();
+            gQID+=1;
+            test[gQID].show();
+            currentQ.innerHTML = gQID+1;
+        }
+    }
+    function stop(){
+        for (let i = 0; i < test.length; i++) {
+            if(test[i].select == test[i].cAI+""){
+                document.write("<body style='display:flex;align-items: center;flex-direction: column;'><div style='max-width:1100px; text-align:center;background-color: rgba(94, 208, 94, 0.626);'><span style='font-size:20px;'>TEST "+(i+1)+"</span><br><span style='color:green;font-size:20px;'>Tog'ri</span><p>"+test[i].quation+"</p><br> tog'ri javob -> "+test[i].ansvers[test[i].cAI]+"</div><br><br>")
+            }else{
+                document.write("<body style='display:flex;align-items: center;flex-direction: column;'><div style='max-width:1100px; text-align:center;background-color: rgba(193, 62, 62, 0.457);'><span style='font-size:20px;'>TEST "+ (i+1)+"</span><br><span style='color:red;font-size:20px;'>Notog'ri</span><p>"+test[i].quation+"</p>tog'ri javob -> "+test[i].ansvers[test[i].cAI]+"</div><br><br>")
+            }
+        }
+    }
+</script>
+</body>
+</html>
